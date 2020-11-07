@@ -10,6 +10,8 @@ import 'react-native-gesture-handler';
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import {
   SafeAreaView,
   StyleSheet,
@@ -35,42 +37,42 @@ import Info from './src/screens/Info';
 import SearchUser from './src/screens/SearchUser';
 
 const Stack = createStackNavigator();
+const Tab = createBottomTabNavigator();
 
 const App: () => React$Node = () => {
   return (
     <NavigationContainer>
+     <Tab.Navigator
+        screenOptions={({ route }) => ({
+          tabBarIcon: ({ focused, color, size }) => {
+            let iconName;
 
-        <Stack.Navigator>
-          <Stack.Screen
+            if (route.name === 'Home') {
+              iconName = focused ? "home" : "home"
+            } else if (route.name === 'Login') {
+              iconName = focused ? "tachometer" : "tachometer";
+            }
+
+            // You can return any component that you like here!
+            return <Icon name={iconName} size={size} color={color} />;
+          },
+        })}
+        tabBarOptions={{
+          activeTintColor: 'tomato',
+          inactiveTintColor: 'gray',
+        }}
+      >
+          <Tab.Screen
             name="Login"
             component={Login}
           />
 
-          <Stack.Screen
+          <Tab.Screen
             name="Home"
             component={Home}
           />
-          
-          <Stack.Screen
-            name="ProjectShow"
-            component={ProjectShow}
-          />
-
-          <Stack.Screen
-            name="ProjectCreate"
-            component={ProjectCreate}
-          />
-
-          <Stack.Screen
-            name="SearchUser"
-            component={SearchUser}
-          />
-
-          <Stack.Screen
-            name="Info"
-            component={Info}
-          />
-        </Stack.Navigator>
+      </Tab.Navigator>
+        
       
     </NavigationContainer>
 
