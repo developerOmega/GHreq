@@ -1,11 +1,13 @@
 import * as React from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 import Var from '../styles/Var';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const Home = () => {
   return (
     <View style={styles.center}>
       <Text style={styles.title}>
+        <Icon name="gitlab" />
         Este es el Home
       </Text>
     </View>

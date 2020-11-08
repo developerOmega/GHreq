@@ -1,13 +1,20 @@
 import * as React from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View, StyleSheet, Button } from 'react-native';
 import Var from '../styles/Var';
 
-const Login = () => {
+const Login = ({navigation}) => {
   return (
     <View style={styles.center}>
       <Text style={styles.title}>
         Este es el Login
       </Text>
+      <Button
+        title="Ingresar"
+        color={Var.colorGreen}
+        onPress={() => {
+          navigation.navigate('Home');
+        }}
+      />
     </View>
   );
 }
@@ -15,7 +22,7 @@ const Login = () => {
 const styles = StyleSheet.create({
   center: {
     flex: 1,
-    flexDirection: 'row',
+    flexDirection: 'column',
     justifyContent: "center",
     alignItems: 'center'
   },
@@ -23,7 +30,12 @@ const styles = StyleSheet.create({
     color: Var.colorText,
     fontSize: 30,
     fontWeight: 'bold'
+  },
+  button: {
+    backgroundColor: Var.colorGreen,
+    padding: 20
   }
+  
 });
 
 export default Login;

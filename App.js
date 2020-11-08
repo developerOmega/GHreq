@@ -11,23 +11,9 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  View,
-  Text,
-  StatusBar,
-} from 'react-native';
-
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+import Var from './src/styles/Var';
+import IconAw from 'react-native-vector-icons/FontAwesome';
+import IconFe from 'react-native-vector-icons/Feather';
 
 import Login from './src/screens/Login';
 import Home from './src/screens/Home';
@@ -36,86 +22,84 @@ import ProjectCreate from './src/screens/ProjectCreate';
 import Info from './src/screens/Info';
 import SearchUser from './src/screens/SearchUser';
 
-const Stack = createStackNavigator();
+
+const RootStack = createStackNavigator();
 const Tab = createBottomTabNavigator();
+
+const HomeTabs = () => {
+  return (
+    <Tab.Navigator
+      tabBarOptions={{
+        activeTintColor: Var.colorGreen,
+        inactiveTintColor: Var.colorText,
+      }}
+    >
+      <Tab.Screen
+        name="Users"
+        component={SearchUser}
+        options={{
+          tabBarLabel: 'Users',
+          headerTitle: "Hola",
+          tabBarIcon: ({color, size}) => {
+            return <IconAw name="search" color={color} size={size} />
+          }
+        }}
+      />
+      
+      <Tab.Screen
+        name="Home"
+        component={Home}
+        options={{
+          tabBarLabel: 'Home',  
+          tabBarIcon: ({color, size}) => {
+            return <IconAw name='home' color={color} size={size} />
+          }
+        }}
+      />
+
+      <Tab.Screen
+        name="Info"
+        component={Info}
+        options={{
+          tabBarLabel: 'Info',
+          tabBarIcon: ({color, size}) => {
+            return <IconAw name='info' color={color} size={size} />            
+          }
+        }}
+      />
+    </Tab.Navigator>
+
+  );
+}
 
 const App: () => React$Node = () => {
   return (
     <NavigationContainer>
-     <Tab.Navigator
-        screenOptions={({ route }) => ({
-          tabBarIcon: ({ focused, color, size }) => {
-            let iconName;
-
-            if (route.name === 'Home') {
-              iconName = focused ? "home" : "home"
-            } else if (route.name === 'Login') {
-              iconName = focused ? "tachometer" : "tachometer";
+      <RootStack.Navigator>
+        <RootStack.Screen 
+          name="Main"
+          options={(route) => ({
+            headerTitle: "GHreq",
+            headerRight: () => {
+              return  <IconFe name="log-out" size={30} onPress={() => {
+                route.navigation.navigate('Login')
+              }} />
             }
-
-            // You can return any component that you like here!
-            return <Icon name={iconName} size={size} color={color} />;
-          },
-        })}
-        tabBarOptions={{
-          activeTintColor: 'tomato',
-          inactiveTintColor: 'gray',
-        }}
-      >
-          <Tab.Screen
-            name="Login"
-            component={Login}
-          />
-
-          <Tab.Screen
-            name="Home"
-            component={Home}
-          />
-      </Tab.Navigator>
-        
-      
+          })}
+          component={HomeTabs}
+        />
+        <RootStack.Screen 
+          name="Login"
+          component={Login}
+          options={{
+            headerShown: false
+          }}
+        />
+      </RootStack.Navigator>
     </NavigationContainer>
 
   );
 };
 
-const styles = StyleSheet.create({
-  scrollView: {
-    backgroundColor: Colors.lighter,
-  },
-  engine: {
-    position: 'absolute',
-    right: 0,
-  },
-  body: {
-    backgroundColor: Colors.white,
-  },
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: Colors.black,
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-    color: Colors.dark,
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-  footer: {
-    color: Colors.dark,
-    fontSize: 12,
-    fontWeight: '600',
-    padding: 4,
-    paddingRight: 12,
-    textAlign: 'right',
-  },
-});
 
 export default App;
