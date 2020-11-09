@@ -72,7 +72,7 @@ const HomeTabs = () => {
   );
 }
 
-const App: () => React$Node = () => {
+const App: () => React$Node = () => { 
   return (
     <NavigationContainer>
       <RootStack.Navigator>

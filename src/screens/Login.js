@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Text, View, StyleSheet, Button, TextInput } from 'react-native';
+import StyleForm from '../styles/Form';
 import Var from '../styles/Var';
 
 const Login = ({navigation}) => {
@@ -11,20 +12,20 @@ const Login = ({navigation}) => {
     <View style={styles.main}>
 
       <Text style={styles.title}> GHReq </Text>
-      <View style={styles.form}>
-        <View style={styles.field}>
+      <View style={StyleForm.form}>
+        <View style={StyleForm.field}>
           <Text> Email </Text>
           <TextInput
-            style={styles.input}
+            style={StyleForm.input}
             value={email}
             onChangeText={setEmail}
           />
         </View>
 
-        <View style={styles.field}>
+        <View style={StyleForm.field}>
           <Text> Password </Text>
           <TextInput 
-            style={styles.input}
+            style={StyleForm.input}
             value={password}
             onChangeText={setPassword}
             secureTextEntry
@@ -58,25 +59,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
     textAlignVertical: 'center',
-  },  
-  form: {
-    flex: 3,
-    flexDirection: 'column',
-    alignItems: 'stretch'
-  },
-  field: {
-    paddingBottom: 50
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: Var.colorGray,
-    borderRadius: 5 
-  },
-  button: {
-    backgroundColor: Var.colorGreen,
-    padding: 20
-  }
-  
+  }  
 });
 
 export default Login;

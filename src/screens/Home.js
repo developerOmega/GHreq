@@ -1,30 +1,44 @@
 import * as React from 'react';
-import { Text, View, StyleSheet } from 'react-native';
-import Var from '../styles/Var';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import { Text, View, StyleSheet, Image, ScrollView } from 'react-native';
+import ProjectCard from '../components/ProjectCard';
+import StyleText from '../styles/Text';
+import StyleImage from '../styles/Images';
+import StyleView from '../styles/View';
 
 const Home = () => {
   return (
-    <View style={styles.center}>
-      <Text style={styles.title}>
-        <Icon name="gitlab" />
-        Este es el Home
-      </Text>
-    </View>
+    <ScrollView>
+      <View style={StyleView.container}>
+        <View style={StyleView.header}>
+          <Image style={[StyleImage.image, StyleImage.w120, styles.image]} source={require('../images/payaso.jpg')} />
+          <View style={styles.info}>
+            <Text style={[StyleText.mainTitle, StyleText.textCenter]}> DeveloperOmega </Text>
+            <Text style={[StyleText.secondTitle, StyleText.textCenter]}> theskip98@gmail.com </Text>
+          </View>
+        </View>
+
+        <ProjectCard />
+      </View>
+      
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  center: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: "center",
-    alignItems: 'center'
+
+  info:{
+    backgroundColor: 'white',
+    borderRadius: 5,
+    paddingTop: 50,
+    paddingBottom: 10,
+    position: 'relative',
+    zIndex: 1,
+    bottom: 50
   },
-  title: {
-    color: Var.colorText,
-    fontSize: 30,
-    fontWeight: 'bold'
+  image: {
+    alignSelf: 'center',
+    position: 'relative',
+    zIndex: 2
   }
 });
 
