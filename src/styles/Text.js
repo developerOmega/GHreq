@@ -10,6 +10,9 @@ const StyleText = StyleSheet.create({
   secondTitle: {
     fontSize: 15
   },
+  fs20: {
+    fontSize: 20
+  },
   colorGray: {
     color: Var.colorSecond
   },  

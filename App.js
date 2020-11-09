@@ -16,7 +16,7 @@ import IconAw from 'react-native-vector-icons/FontAwesome';
 import IconFe from 'react-native-vector-icons/Feather';
 
 import Login from './src/screens/Login';
-import Home from './src/screens/Home';
+import Profile from './src/screens/Profile';
 import ProjectShow from './src/screens/ProjectShow';
 import ProjectCreate from './src/screens/ProjectCreate';
 import Info from './src/screens/Info';
@@ -25,6 +25,27 @@ import SearchUser from './src/screens/SearchUser';
 
 const RootStack = createStackNavigator();
 const Tab = createBottomTabNavigator();
+
+const HomeStack = createStackNavigator();
+
+const Home = () => {
+  return (
+    <HomeStack.Navigator>
+      <HomeStack.Screen 
+        name="Home"
+        component={Profile}
+      />
+      <HomeStack.Screen 
+        name="Show"
+        component={ProjectShow}
+      />
+      <HomeStack.Screen 
+        name="Create"
+        component={ProjectCreate}
+      />
+    </HomeStack.Navigator>
+  );
+}
 
 const HomeTabs = () => {
   return (

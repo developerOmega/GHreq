@@ -1,32 +1,40 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableHighlight } from 'react-native';
 import StyleText from '../styles/Text';
 import StyleImage from '../styles/Images';
 import StyleView from '../styles/View';
 
 const Card = (props) => {
   const projects = props.projects;
+  const navigation = props.navigation;
   const listCards = projects.map( (project) => {
     return (
-      <View style={[styles.card, StyleView.borderBottomGray]} key={project.id}>
-        <View style={styles.first}>
-          <Text style={StyleText.mainTitle}> { project.name } </Text>
-          <View style={styles.images}>
-            {project.collaborators.map( collaborator => {
-              return <Image style={[StyleImage.image, StyleImage.w30]} source={collaborator.img}/>
-            })}
+      <TouchableHighlight
+        key={project.id}
+        onPress={() => navigation.navigate('Show', {project: project})}
+      >
+        <View 
+          style={[styles.card, StyleView.borderBottomGray]} 
+        >
+          <View style={styles.first}>
+            <Text style={StyleText.mainTitle}> { project.name } </Text>
+            <View style={styles.images}>
+              {project.collaborators.map( collaborator => {
+                return <Image key={collaborator.img} style={[StyleImage.image, StyleImage.w30]} source={collaborator.img}/>
+              })}
+            </View>
+          </View>
+
+          <View style={styles.middle}>
+            <Text style={[StyleText.secondTitle, StyleText.colorGray]}> { project.description } </Text>
+          </View>
+
+          <View style={styles.end}>
+            <Text style={[StyleText.secondTitle, StyleText.bold]}> {project.language} </Text>
+            <Text style={[StyleText.secondTitle, StyleText.colorGray]}> {project.commits} commits </Text>
           </View>
         </View>
-
-        <View style={styles.middle}>
-          <Text style={[StyleText.secondTitle, StyleText.colorGray]}> { project.description } </Text>
-        </View>
-
-        <View style={styles.end}>
-          <Text style={[StyleText.secondTitle, StyleText.bold]}> {project.language} </Text>
-          <Text style={[StyleText.secondTitle, StyleText.colorGray]}> {project.commits} commits </Text>
-        </View>
-      </View> 
+      </TouchableHighlight> 
     )
   } );
 
@@ -92,7 +100,7 @@ const projects = [
   }
 ];
 
-const ProjectCard = () => <Card projects={projects} />
+const ProjectCard = (props) => <Card projects={projects} navigation={props.navigation} />
 
 const styles = StyleSheet.create({
   images: {

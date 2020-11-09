@@ -5,7 +5,7 @@ import StyleText from '../styles/Text';
 import StyleImage from '../styles/Images';
 import StyleView from '../styles/View';
 
-const Home = () => {
+const Profile = ({navigation}) => {
   return (
     <ScrollView>
       <View style={StyleView.container}>
@@ -17,7 +17,7 @@ const Home = () => {
           </View>
         </View>
 
-        <ProjectCard />
+        <ProjectCard navigation={navigation} />
       </View>
       
     </ScrollView>
@@ -42,4 +42,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Home;
+export default Profile;

@@ -11,6 +11,14 @@ const StyleImage  = StyleSheet.create({
   w30: {
     width: 30,
     height: 30
+  },
+  w80: {
+    width: 80,
+    height: 80
+  },
+  w60: {
+    width: 60,
+    height: 60
   }
 });
 
