@@ -21,6 +21,11 @@ const StyleView = StyleSheet.create({
     borderColor: 'transparent',
     borderBottomColor: Var.colorGray,
     borderWidth: 1
+  },
+  box: {
+    backgroundColor: 'white',
+    borderRadius: 5,
+    padding: 10
   }
 }); 
 

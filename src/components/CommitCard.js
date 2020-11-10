@@ -8,7 +8,7 @@ const Card = (props) => {
   const commits = props.commits;
   const listCards = commits.map( commit => {
     return (
-      <View style={[StyleView.borderBottomGray, styles.card]}>
+      <View key={commit.id} style={[StyleView.borderBottomGray, styles.card]}>
         <Text  style={[StyleText.colorGray, StyleText.secondTitle, styles.desc]} >  
           {commit.description} 
         </Text>

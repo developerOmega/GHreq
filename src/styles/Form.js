@@ -23,6 +23,9 @@ const StyleForm = StyleSheet.create({
   },
   padBottom50: {
     paddingBottom: 50
+  },
+  padBottom20: {
+    paddingBottom: 20
   }
 });
 

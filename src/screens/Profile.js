@@ -1,9 +1,16 @@
 import * as React from 'react';
-import { Text, View, StyleSheet, Image, ScrollView } from 'react-native';
+import { Text, View, StyleSheet, Image, ScrollView, Button } from 'react-native';
 import ProjectCard from '../components/ProjectCard';
 import StyleText from '../styles/Text';
 import StyleImage from '../styles/Images';
 import StyleView from '../styles/View';
+import Var from '../styles/Var';
+
+const validateComponent = (validate, callback) => {
+  if(validate) {
+    return callback();
+  } 
+}
 
 const Profile = ({route, navigation}) => {
   const user = !route.params ? {
@@ -20,6 +27,21 @@ const Profile = ({route, navigation}) => {
           <View style={styles.info}>
             <Text style={[StyleText.mainTitle, StyleText.textCenter]}> {user.name} </Text>
             <Text style={[StyleText.secondTitle, StyleText.textCenter]}> {user.email} </Text>
+            
+            {validateComponent(!route.params, () => {
+              return (
+                <View style={styles.padding10}>
+                  <Button 
+                    title="New Repo"
+                    color={Var.colorGreen}
+                    onPress={() => {
+                      navigation.navigate('Create');
+                    }}
+                  />
+                </View>
+              ) 
+            })}
+            
           </View>
         </View>
 
@@ -29,6 +51,7 @@ const Profile = ({route, navigation}) => {
     </ScrollView>
   );
 }
+
 
 const styles = StyleSheet.create({
 
@@ -45,6 +68,9 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     position: 'relative',
     zIndex: 2
+  },
+  padding10: {
+    padding: 10
   }
 });
 
