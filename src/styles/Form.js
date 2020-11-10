@@ -8,7 +8,6 @@ const StyleForm = StyleSheet.create({
     alignItems: 'stretch'
   },
   field: {
-    paddingBottom: 50
   },
   input: {
     borderWidth: 1,
@@ -17,7 +16,13 @@ const StyleForm = StyleSheet.create({
   },
   button: {
     backgroundColor: Var.colorGreen,
-    padding: 20
+    padding: 20,
+    color: 'white',
+    fontSize: 20,
+    borderRadius: 5
+  },
+  padBottom50: {
+    paddingBottom: 50
   }
 });
 

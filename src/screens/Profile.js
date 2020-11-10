@@ -5,15 +5,21 @@ import StyleText from '../styles/Text';
 import StyleImage from '../styles/Images';
 import StyleView from '../styles/View';
 
-const Profile = ({navigation}) => {
+const Profile = ({route, navigation}) => {
+  const user = !route.params ? {
+    name: 'DeveloperOmega',
+    email: 'theskip98@gmail.com',
+    img: require('../images/payaso.jpg') 
+  } : route.params.user;
+
   return (
     <ScrollView>
       <View style={StyleView.container}>
         <View style={StyleView.header}>
-          <Image style={[StyleImage.image, StyleImage.w120, styles.image]} source={require('../images/payaso.jpg')} />
+          <Image style={[StyleImage.image, StyleImage.w120, styles.image]} source={user.img} />
           <View style={styles.info}>
-            <Text style={[StyleText.mainTitle, StyleText.textCenter]}> DeveloperOmega </Text>
-            <Text style={[StyleText.secondTitle, StyleText.textCenter]}> theskip98@gmail.com </Text>
+            <Text style={[StyleText.mainTitle, StyleText.textCenter]}> {user.name} </Text>
+            <Text style={[StyleText.secondTitle, StyleText.textCenter]}> {user.email} </Text>
           </View>
         </View>
 

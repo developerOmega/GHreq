@@ -29,6 +29,7 @@ const Tab = createBottomTabNavigator();
 const HomeStack = createStackNavigator();
 
 const Home = () => {
+
   return (
     <HomeStack.Navigator>
       <HomeStack.Screen 
@@ -108,6 +109,10 @@ const App: () => React$Node = () => {
             }
           })}
           component={HomeTabs}
+        />
+        <RootStack.Screen
+          name="UserShow"
+          component={Profile}
         />
         <RootStack.Screen 
           name="Login"

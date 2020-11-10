@@ -13,7 +13,7 @@ const Login = ({navigation}) => {
 
       <Text style={styles.title}> GHReq </Text>
       <View style={StyleForm.form}>
-        <View style={StyleForm.field}>
+        <View style={[StyleForm.field, StyleForm.padBottom50]}>
           <Text> Email </Text>
           <TextInput
             style={StyleForm.input}
@@ -22,7 +22,7 @@ const Login = ({navigation}) => {
           />
         </View>
 
-        <View style={StyleForm.field}>
+        <View style={[StyleForm.field, StyleForm.padBottom50]}>
           <Text> Password </Text>
           <TextInput 
             style={StyleForm.input}
