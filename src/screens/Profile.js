@@ -1,11 +1,13 @@
-import * as React from 'react';
+import React, {useReducer, useEffect, useState} from 'react';
 import { Text, View, StyleSheet, Image, ScrollView, Button } from 'react-native';
 import ProjectCard from '../components/ProjectCard';
 import StyleText from '../styles/Text';
 import StyleImage from '../styles/Images';
 import StyleView from '../styles/View';
 import Var from '../styles/Var';
+import My from '../models/My';
 
+const my = new My;
 const validateComponent = (validate, callback) => {
   if(validate) {
     return callback();
@@ -13,20 +15,36 @@ const validateComponent = (validate, callback) => {
 }
 
 const Profile = ({route, navigation}) => {
-  const user = !route.params ? {
-    name: 'DeveloperOmega',
-    email: 'theskip98@gmail.com',
-    img: require('../images/payaso.jpg') 
-  } : route.params.user;
+  const [profile, setProfile] = useState({});
+  useEffect(() => {
+    const fetchData = async () => {
+      if(route.params == undefined) {
+        try {
+          setProfile(await my.getProfile());
+        } catch (error) {
+          return console.error(error);
+        }
+      }
+      else {
+        console.log("El parametro cumple")
+        setProfile(route.params.user)
+      } 
+    }
+    fetchData();
+
+    return () => console.log("This will be logged on unmount");
+
+  }, []);
+  
 
   return (
     <ScrollView>
       <View style={StyleView.container}>
         <View style={StyleView.header}>
-          <Image style={[StyleImage.image, StyleImage.w120, styles.image]} source={user.img} />
+          <Image style={[StyleImage.image, StyleImage.w120, styles.image]} source={{uri: profile.avatar_url}} />
           <View style={styles.info}>
-            <Text style={[StyleText.mainTitle, StyleText.textCenter]}> {user.name} </Text>
-            <Text style={[StyleText.secondTitle, StyleText.textCenter]}> {user.email} </Text>
+            <Text style={[StyleText.mainTitle, StyleText.textCenter]}> {profile.login} </Text>
+            <Text style={[StyleText.secondTitle, StyleText.textCenter]}> {!profile.email ? '' : profile.email} </Text>
             
             {validateComponent(!route.params, () => {
               return (
@@ -45,7 +63,7 @@ const Profile = ({route, navigation}) => {
           </View>
         </View>
 
-        <ProjectCard navigation={navigation} />
+        <ProjectCard navigation={navigation} user={profile.login}/>
       </View>
       
     </ScrollView>

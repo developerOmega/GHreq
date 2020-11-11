@@ -1,37 +1,55 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { View, Text, StyleSheet, Image, TouchableHighlight } from 'react-native';
 import StyleText from '../styles/Text';
 import StyleImage from '../styles/Images';
 import StyleView from '../styles/View';
+import User from '../models/User';
+import Repo from '../models/Repo';
 
 const Card = (props) => {
-  const projects = props.projects;
   const navigation = props.navigation;
-  const listCards = projects.map( (project) => {
+  const repos = props.repos;
+  const user = props.user;
+  const listCards = repos.map( (data) => {
+    let repoR = new Repo(user, data.name);
+    const [collaborators, setCollaborators] = useState([]);
+    const [commits, setCommits] = useState(0);
+
+    useEffect(() => {
+      const getRepo = async () => {
+        setCollaborators(await repoR.getCollaborators());
+
+        let commitsCount = await repoR.getCommits(); 
+        setCommits( commitsCount.length );
+      }
+      getRepo();
+      return 'Repo Execute';
+    },[]);
+
     return (
       <TouchableHighlight
         key={project.id}
-        onPress={() => navigation.navigate('Show', {project: project})}
+        onPress={() => navigation.navigate('Show', {project: data})}
       >
         <View 
           style={[styles.card, StyleView.borderBottomGray]} 
         >
           <View style={styles.first}>
-            <Text style={StyleText.mainTitle}> { project.name } </Text>
+            <Text style={StyleText.mainTitle}> { data.name } </Text>
             <View style={styles.images}>
-              {project.collaborators.map( collaborator => {
-                return <Image key={collaborator.img} style={[StyleImage.image, StyleImage.w30]} source={collaborator.img}/>
+              {collaborators.map( collaborator => {
+                return <Image key={collaborator.id} style={[StyleImage.image, StyleImage.w30]} source={{uri: collaborator.avatar_url}}/>
               })}
             </View>
           </View>
 
           <View style={styles.middle}>
-            <Text style={[StyleText.secondTitle, StyleText.colorGray]}> { project.description } </Text>
+            <Text style={[StyleText.secondTitle, StyleText.colorGray]}> { data.description } </Text>
           </View>
 
           <View style={styles.end}>
-            <Text style={[StyleText.secondTitle, StyleText.bold]}> {project.language} </Text>
-            <Text style={[StyleText.secondTitle, StyleText.colorGray]}> {project.commits} commits </Text>
+            <Text style={[StyleText.secondTitle, StyleText.bold]}> {data.language} </Text>
+            <Text style={[StyleText.secondTitle, StyleText.colorGray]}> {commits} commits </Text>
           </View>
         </View>
       </TouchableHighlight> 
@@ -100,7 +118,23 @@ const projects = [
   }
 ];
 
-const ProjectCard = (props) => <Card projects={projects} navigation={props.navigation} />
+const ProjectCard = (props) => {
+  const user = new User(props.user);
+  const [repos, setRepos] = useState([]);
+
+  useEffect(() => {
+    const getRepos = async () => {
+      setRepos( await user.getRepos() );      
+    }
+    getRepos();
+    return console.log("Execute GET REPOS");
+  });
+
+  return (
+    <Card repos={repos} user={props.user} navigation={props.navigation} />
+  )
+
+}
 
 const styles = StyleSheet.create({
   images: {
