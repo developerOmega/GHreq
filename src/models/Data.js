@@ -1,3 +1,4 @@
+// import React, {Component} from 'react'
 import KeyAuth from '../../keyAuth';
 import AsyncStorage from '@react-native-community/async-storage';
 

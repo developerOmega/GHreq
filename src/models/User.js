@@ -2,9 +2,11 @@ import Data from './Data';
 import Axios from 'axios';
 
 export default class User extends Data {
+  user = '';
+
   constructor(user) {
-    // this.user = user;
     super();
+    this.user = user;
   }
 
   async getUsers(username) {

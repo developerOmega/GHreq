@@ -3,8 +3,8 @@ import Axios from 'axios';
 
 export default class Repo extends User {
   constructor(user, repo) {
-    this.repo = repo,
     super(user);
+    this.repo = repo;
   }
 
   async getRepo() {
@@ -14,7 +14,9 @@ export default class Repo extends User {
         "Authorization": `bearer ${token}`,
       }
     });
-    return commits.data;
+    let data = commits.data;
+
+    return data;
   }
 
   async getCommits() {

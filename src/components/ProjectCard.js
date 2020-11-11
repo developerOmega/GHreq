@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useReducer, useMemo} from 'react';
 import { View, Text, StyleSheet, Image, TouchableHighlight } from 'react-native';
 import StyleText from '../styles/Text';
 import StyleImage from '../styles/Images';
@@ -6,29 +6,52 @@ import StyleView from '../styles/View';
 import User from '../models/User';
 import Repo from '../models/Repo';
 
+
+const reducer = (state, action) => {
+  state.collaborators = action.collaborators;
+  state.commits = action.commits;
+  return state;
+}
+
 const Card = (props) => {
+
   const navigation = props.navigation;
   const repos = props.repos;
   const user = props.user;
+
   const listCards = repos.map( (data) => {
-    let repoR = new Repo(user, data.name);
-    const [collaborators, setCollaborators] = useState([]);
-    const [commits, setCommits] = useState(0);
-
-    useEffect(() => {
-      const getRepo = async () => {
-        setCollaborators(await repoR.getCollaborators());
-
-        let commitsCount = await repoR.getCommits(); 
-        setCommits( commitsCount.length );
-      }
-      getRepo();
-      return 'Repo Execute';
-    },[]);
-
+    // const [state, dispatch] = useReducer(reducer, {
+    //   collaborators: [],
+    //   commits: 0 
+    // });
+  
+    // const repoOption = useMemo(() => ({
+    //   useRepo: async data => {
+    //     let repoR = new Repo(data.user, data.repo);
+    //     try {
+    //       let collaborators = await repoR.getCollaborators();
+    //       let commits = await repoR.getCommits();
+    //       commits = commits.length;
+    //       dispatch({collaborators, commits});
+    //     } catch (error) {
+    //       console.error("Hay un error", error);
+    //     }
+    //   }
+    // }), []);
+    
+    // useEffect(() => {
+    //   const getRepo = () => {
+    //     repoOption.useRepo({user, repo: data})
+    //       .then(() => console.log('Succes'))
+    //       .catch(err => console.error(error))
+    //   }
+    //   getRepo();
+    //   return "Please don't give me problems"
+    // });
+    
     return (
       <TouchableHighlight
-        key={project.id}
+        key={data.id}
         onPress={() => navigation.navigate('Show', {project: data})}
       >
         <View 
@@ -36,11 +59,12 @@ const Card = (props) => {
         >
           <View style={styles.first}>
             <Text style={StyleText.mainTitle}> { data.name } </Text>
-            <View style={styles.images}>
-              {collaborators.map( collaborator => {
+
+            {/* <View style={styles.images}>
+              {state.collaborators.map( collaborator => {
                 return <Image key={collaborator.id} style={[StyleImage.image, StyleImage.w30]} source={{uri: collaborator.avatar_url}}/>
               })}
-            </View>
+            </View> */}
           </View>
 
           <View style={styles.middle}>
@@ -49,7 +73,7 @@ const Card = (props) => {
 
           <View style={styles.end}>
             <Text style={[StyleText.secondTitle, StyleText.bold]}> {data.language} </Text>
-            <Text style={[StyleText.secondTitle, StyleText.colorGray]}> {commits} commits </Text>
+            {/* <Text style={[StyleText.secondTitle, StyleText.colorGray]}> {state.commits} commits </Text> */}
           </View>
         </View>
       </TouchableHighlight> 
