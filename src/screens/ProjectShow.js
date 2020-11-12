@@ -6,14 +6,14 @@ import StyleText from '../styles/Text';
 import StyleImage from '../styles/Images';
 
 const ProjectShow = ({route}) => {
-  const project = route.params.project;
+  const repo = route.params.repo;
   return (
     <ScrollView>
       <View style={StyleView.container}>
         <View style={[StyleView.header, styles.container]}>
           <View style={styles.first}>
-            <Text style={[StyleText.mainTitle, StyleText.bold]}> { project.name } </Text>
-            <Text style={[StyleText.fs20, StyleText.bold]} > { project.language } </Text>
+            <Text style={[StyleText.mainTitle, StyleText.bold]}> { repo.name } </Text>
+            <Text style={[StyleText.fs20, StyleText.bold]} > { repo.language } </Text>
           </View>
           <View style={styles.end}>
             <Image
@@ -21,14 +21,14 @@ const ProjectShow = ({route}) => {
               source={require('../images/payaso.jpg')}
             />
             <View>
-              <Text style={[StyleText.bold, StyleText.fs20 ]}> DeveloperOmega </Text>
-              <Text style={[StyleText.colorGray, StyleText.secondTitle ]}> theskip98@gmail.com </Text>
+              <Text style={[StyleText.bold, StyleText.fs20 ]}> {repo.owner.login} </Text>
+              <Text style={[StyleText.colorGray, StyleText.secondTitle ]}> { !repo.owner.email ? '' : repo.owner.email } </Text>
             </View>
           </View>
         </View>
 
         <View style={StyleView.main}>
-          <CommitCard />
+          <CommitCard user={repo.owner.login} repo={repo.name} />
         </View>
       </View>
     </ScrollView>

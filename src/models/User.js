@@ -21,6 +21,11 @@ export default class User extends Data {
     return users.data;
   }
 
+  async getUserImgAvatar() {
+    const user = await this.getUsers(this.user);
+    return user.avatar_url;
+  }
+
   async getRepos() {
     const token = await this.accessToken();
     const repos = await Axios.get(`https://api.github.com/users/${this.user}/repos`, {

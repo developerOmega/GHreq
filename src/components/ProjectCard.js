@@ -49,7 +49,7 @@ const Card = (props) => {
     return (
       <TouchableHighlight
           key={data.id}
-          onPress={() => navigation.navigate('Show', {project: data})}
+          onPress={() => navigation.navigate('Show', {repo: data})}
       >
         {
           isLoading ? (

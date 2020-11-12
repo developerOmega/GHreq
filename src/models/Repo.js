@@ -30,6 +30,16 @@ export default class Repo extends User {
     return commits.data;
   }
 
+  async getCommit(sha) {
+    const token = await this.accessToken();
+    const commit = await Axios.get(`https://api.github.com/repos/${this.user}/${this.repo}/commits/${sha}`, {
+      headers: {
+        "Authorization": `bearer ${token}`,
+      }
+    });
+    return commit.data;
+  }
+
   async getCollaborators() {
     const token = await this.accessToken();
     const commits = await Axios.get(`https://api.github.com/repos/${this.user}/${this.repo}/collaborators`, {
