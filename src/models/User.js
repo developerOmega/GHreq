@@ -2,10 +2,12 @@ import Data from './Data';
 import Axios from 'axios';
 
 export default class User extends Data {
-  user = '';
-
   constructor(user) {
     super();
+    this.user = !user  ? '' : user;
+  }
+
+  setUser(user) {
     this.user = user;
   }
 

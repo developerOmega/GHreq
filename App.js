@@ -68,7 +68,7 @@ const App: () => React$Node = () => {
     const authInit = async () => {
       let userToken;
       try {
-        userToken = await auth.accessToken();
+        userToken = await AsyncStorage.getItem('access_token');
       } catch (error) {
         console.error(error);
       }

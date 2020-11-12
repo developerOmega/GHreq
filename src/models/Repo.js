@@ -5,6 +5,7 @@ export default class Repo extends User {
   constructor(user, repo) {
     super(user);
     this.repo = repo;
+    console.log("Repo: ", this.repo, "User: ", this.user )
   }
 
   async getRepo() {

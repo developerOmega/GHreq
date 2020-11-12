@@ -1,8 +1,9 @@
-import React, {useEffect, useState, useReducer, useMemo} from 'react';
+import React, {useEffect, useState, useReducer} from 'react';
 import { View, Text, StyleSheet, Image, TouchableHighlight } from 'react-native';
 import StyleText from '../styles/Text';
 import StyleImage from '../styles/Images';
 import StyleView from '../styles/View';
+import Loading from '../components/Loading';
 import User from '../models/User';
 import Repo from '../models/Repo';
 
@@ -14,40 +15,64 @@ const reducer = (state, action) => {
 }
 
 const Card = (props) => {
-
   const navigation = props.navigation;
-  const repos = props.repos;
-  const user = props.user;
+  const user = props.user;  
+  const [isLoading, setIsLoading] = useState(true);
+  const [repos, setRepos] = useState([]);
+  
+  useEffect(() => {
+    const getRepos = () => {
+      
+      const userR = new User(user);
+      userR.getRepos()
+        .then((data) => {
+          setRepos(data);
+          setIsLoading(false)
+          console.log("Repositorio: ", repos);
+        })
+        .catch((error) => console.error(error))
+
+      // try {
+      //   setRepos( await userR.getRepos() );      
+      //   setIsLoading(false);
+      // } catch (error) {
+      //   console.error(error)
+      // }
+    }
+    // userR.getUsers(user);
+    getRepos();
+
+    return () => () => {
+      console.log("Effect")
+    }
+
+  }, []);
+
 
   const listCards = repos.map( (data) => {
     // const [state, dispatch] = useReducer(reducer, {
     //   collaborators: [],
     //   commits: 0 
     // });
-  
-    // const repoOption = useMemo(() => ({
-    //   useRepo: async data => {
-    //     let repoR = new Repo(data.user, data.repo);
+    // let repoR = new Repo(user, data.name);
+    
+    // useEffect(() => {
+    //   const getRepo = async () => {
     //     try {
     //       let collaborators = await repoR.getCollaborators();
     //       let commits = await repoR.getCommits();
-    //       commits = commits.length;
+    //       // commits = commits.length;
     //       dispatch({collaborators, commits});
     //     } catch (error) {
     //       console.error("Hay un error", error);
     //     }
     //   }
-    // }), []);
-    
-    // useEffect(() => {
-    //   const getRepo = () => {
-    //     repoOption.useRepo({user, repo: data})
-    //       .then(() => console.log('Succes'))
-    //       .catch(err => console.error(error))
-    //   }
     //   getRepo();
-    //   return "Please don't give me problems"
-    // });
+
+    //   return () => {
+    //     console.log("Please don't give me problems");
+    //   } 
+    // }, []);
     
     return (
       <TouchableHighlight
@@ -81,81 +106,24 @@ const Card = (props) => {
   } );
 
   return (
-    <View  style={StyleView.main}> 
-      {listCards} 
-    </View >
+    <View>
+      {
+        isLoading ? (
+          <Loading />
+        ) : (
+          <View  style={StyleView.main}> 
+            {listCards} 
+          </View >
+        )
+      }
+    </View>
   );
 }
 
-
-const projects = [
-  {
-    id: 1,
-    name: "TaskLab",
-    description: "Enviroment to manage projects",
-    language: "Vue",
-    commits: 32,
-    collaborators: [
-      { img: require('../images/perfil.jpg') },
-      { img: require('../images/payaso.jpg') }
-    ]
-  },
-  {
-    id: 2,
-    name: "CampusBay",
-    description: "College plarform to request notes",
-    language: "PHP",
-    commits: 56,
-    collaborators: [
-      { img: require('../images/payaso.jpg') }
-    ],
-  },
-  {
-    id: 3,
-    name: "TaskLabApi",
-    description: "TaskLab's Api",
-    language: "PHP",
-    commits: 56,
-    collaborators: [
-      { img: require('../images/payaso.jpg') }
-    ],
-  },
-  {
-    id: 4,
-    name: "TaskLabApi",
-    description: "TaskLab's Api",
-    language: "JavaScript",
-    commits: 78,
-    collaborators: [
-      { img: require('../images/payaso.jpg') }
-    ],
-  },
-  {
-    id: 5,
-    name: "DevOmega",
-    description: "Web page by DeveloperOmega",
-    language: "PHP",
-    commits: 67,
-    collaborators: [
-      { img: require('../images/payaso.jpg') }
-    ],
-  }
-];
-
 const ProjectCard = (props) => {
-  const user = new User(props.user);
-  const [repos, setRepos] = useState([]);
-
-  useEffect(() => {
-    const getRepos = async () => {
-      setRepos( await user.getRepos() );      
-    }
-    getRepos();
-    return console.log("Execute GET REPOS");
-  });
 
   return (
-    <Card repos={repos} user={props.user} navigation={props.navigation} />
+    <Card user={props.user} navigation={props.navigation} />
   )
 
 }
