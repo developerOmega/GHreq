@@ -28,6 +28,7 @@ export default class User extends Data {
         "Authorization": `bearer ${token}`,
       }
     });
+    console.log("REPOS FROM CLASS",repos.data);
     return repos.data;
   }
 

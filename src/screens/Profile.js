@@ -1,6 +1,7 @@
 import React, {useReducer, useEffect, useState} from 'react';
 import { Text, View, StyleSheet, Image, ScrollView, Button } from 'react-native';
 import ProjectCard from '../components/ProjectCard';
+import Loading from '../components/Loading';
 import StyleText from '../styles/Text';
 import StyleImage from '../styles/Images';
 import StyleView from '../styles/View';
@@ -16,11 +17,13 @@ const validateComponent = (validate, callback) => {
 
 const Profile = ({route, navigation}) => {
   const [profile, setProfile] = useState({});
+  const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     const fetchData = async () => {
       if(route.params == undefined) {
         try {
           setProfile(await my.getProfile());
+          setIsLoading(false);
         } catch (error) {
           return console.error(error);
         }
@@ -63,7 +66,13 @@ const Profile = ({route, navigation}) => {
           </View>
         </View>
 
-        <ProjectCard navigation={navigation} user={profile.login}/>
+        {
+          isLoading ? (
+            <Loading />
+          ) : (
+            <ProjectCard navigation={navigation} user={profile.login}/>
+          )
+        }
       </View>
       
     </ScrollView>

@@ -17,29 +17,101 @@ const reducer = (state, action) => {
 const Card = (props) => {
   const navigation = props.navigation;
   const user = props.user;  
+  const repos = props.repos;
+
+  const listCards = repos.map( (data) => {
+    const [state, dispatch] = useReducer(reducer, {
+      collaborators: [],
+      commits: 0 
+    });
+    let repoR = new Repo(user, data.name);
+    let [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+      const getRepo = async () => {
+        try {
+          let collaborators = await repoR.getCollaborators();
+          let commits = [];
+          // commits = commits.length;
+          setIsLoading(false)
+          dispatch({collaborators, commits});
+        } catch (error) {
+          console.error("Hay un error", error);
+        }
+      }
+      getRepo();
+
+      return () => {
+        console.log("Please don't give me problems");
+      } 
+    }, []);
+    
+    return (
+      <TouchableHighlight
+          key={data.id}
+          onPress={() => navigation.navigate('Show', {project: data})}
+      >
+        {
+          isLoading ? (
+            <Loading />
+          ) : (
+            
+            <View 
+              style={[styles.card, StyleView.borderBottomGray]} 
+            >
+              <View style={styles.first}>
+              
+                <Text style={[StyleText.mainTitle, styles.flex2]}> { data.name } </Text>
+                <View style={[styles.images, styles.flex1]}>
+                  {state.collaborators.map( collaborator => {
+                    return <Image key={collaborator.id} style={[StyleImage.image, StyleImage.w30]} source={{uri: collaborator.avatar_url}}/>
+                  })}
+                </View>
+              </View>
+
+              <View style={styles.middle}>
+                <Text style={[StyleText.secondTitle, StyleText.colorGray]}> { data.description } </Text>
+              </View>
+
+              <View style={styles.end}>
+                <Text style={[StyleText.secondTitle, StyleText.bold]}> {data.language} </Text>
+                {/* <Text style={[StyleText.secondTitle, StyleText.colorGray]}> commits </Text> */}
+              </View>
+            </View>
+             
+          )
+        }  
+      </TouchableHighlight>
+    )
+  } );
+
+  return (
+    <View>
+      <View  style={StyleView.main}> 
+        {listCards} 
+      </View >
+    </View>
+  );
+}
+
+const ProjectCard = (props) => {
   const [isLoading, setIsLoading] = useState(true);
   const [repos, setRepos] = useState([]);
+  const userR = new User(props.user);
   
   useEffect(() => {
-    const getRepos = () => {
-      
-      const userR = new User(user);
-      userR.getRepos()
-        .then((data) => {
-          setRepos(data);
-          setIsLoading(false)
-          console.log("Repositorio: ", repos);
-        })
-        .catch((error) => console.error(error))
+    const getRepos = async () => {
+      let reposData = [];
+      console.log("Este es el token: ", props.user)
+      try {
+        reposData = await userR.getRepos();
+        setRepos(reposData);
+        setIsLoading(false)
+      } catch (error) {
+        console.error(error);
+      }
 
-      // try {
-      //   setRepos( await userR.getRepos() );      
-      //   setIsLoading(false);
-      // } catch (error) {
-      //   console.error(error)
-      // }
     }
-    // userR.getUsers(user);
     getRepos();
 
     return () => () => {
@@ -49,61 +121,6 @@ const Card = (props) => {
   }, []);
 
 
-  const listCards = repos.map( (data) => {
-    // const [state, dispatch] = useReducer(reducer, {
-    //   collaborators: [],
-    //   commits: 0 
-    // });
-    // let repoR = new Repo(user, data.name);
-    
-    // useEffect(() => {
-    //   const getRepo = async () => {
-    //     try {
-    //       let collaborators = await repoR.getCollaborators();
-    //       let commits = await repoR.getCommits();
-    //       // commits = commits.length;
-    //       dispatch({collaborators, commits});
-    //     } catch (error) {
-    //       console.error("Hay un error", error);
-    //     }
-    //   }
-    //   getRepo();
-
-    //   return () => {
-    //     console.log("Please don't give me problems");
-    //   } 
-    // }, []);
-    
-    return (
-      <TouchableHighlight
-        key={data.id}
-        onPress={() => navigation.navigate('Show', {project: data})}
-      >
-        <View 
-          style={[styles.card, StyleView.borderBottomGray]} 
-        >
-          <View style={styles.first}>
-            <Text style={StyleText.mainTitle}> { data.name } </Text>
-
-            {/* <View style={styles.images}>
-              {state.collaborators.map( collaborator => {
-                return <Image key={collaborator.id} style={[StyleImage.image, StyleImage.w30]} source={{uri: collaborator.avatar_url}}/>
-              })}
-            </View> */}
-          </View>
-
-          <View style={styles.middle}>
-            <Text style={[StyleText.secondTitle, StyleText.colorGray]}> { data.description } </Text>
-          </View>
-
-          <View style={styles.end}>
-            <Text style={[StyleText.secondTitle, StyleText.bold]}> {data.language} </Text>
-            {/* <Text style={[StyleText.secondTitle, StyleText.colorGray]}> {state.commits} commits </Text> */}
-          </View>
-        </View>
-      </TouchableHighlight> 
-    )
-  } );
 
   return (
     <View>
@@ -111,19 +128,10 @@ const Card = (props) => {
         isLoading ? (
           <Loading />
         ) : (
-          <View  style={StyleView.main}> 
-            {listCards} 
-          </View >
+          <Card repos={repos} user={props.user} navigation={props.navigation} />
         )
       }
     </View>
-  );
-}
-
-const ProjectCard = (props) => {
-
-  return (
-    <Card user={props.user} navigation={props.navigation} />
   )
 
 }
@@ -140,7 +148,8 @@ const styles = StyleSheet.create({
   first: {
     flex: 1,
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   middle: {
     flex: 1,
@@ -151,6 +160,13 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between'
+  },
+  flex1: {
+    flex: 1,
+    justifyContent: 'flex-end'
+  },
+  flex2: {
+    flex: 3
   }
 });
 
