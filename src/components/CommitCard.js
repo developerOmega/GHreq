@@ -53,51 +53,6 @@ const Card = (props) => {
   </View>
 }
 
-const commits = [
-  {
-    id: 1,
-    description: "Agregar todas las tareas al index",
-    collaborator: {
-      img: require('../images/payaso.jpg')
-    }
-  },
-  {
-    id: 2,
-    description: "Crear nueva variable de entorno",
-    collaborator: {
-      img: require('../images/perfil.jpg')
-    }
-  },
-  {
-    id: 3,
-    description: "Crear comandos con yargs para crear comandos en data base",
-    collaborator: {
-      img: require('../images/perfil.jpg')
-    }
-  },
-  {
-    id: 4,
-    description: "Agregar API a index",
-    collaborator: {
-      img: require('../images/payaso.jpg')
-    }
-  },
-  {
-    id: 5,
-    description: "Agregar sockets para tabla de mensajes",
-    collaborator: {
-      img: require('../images/payaso.jpg')
-    }
-  },
-  {
-    id: 6,
-    description: "Agregar query TaskByUsers para que el usuario pueda ver sus tareas",
-    collaborator: {
-      img: require('../images/perfil.jpg')
-    }
-  }
-]
-
 const CommitCard = (props) => {
   const [commits, setCommits] = useState([]);
   const [isLoading, setIsLoading] = useState(true);

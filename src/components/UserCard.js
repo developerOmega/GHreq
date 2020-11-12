@@ -1,8 +1,9 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, Text, Image, TouchableHighlight, StyleSheet} from 'react-native';
 import StyleImage from '../styles/Images';
 import StyleText from '../styles/Text';
 import StyleView from '../styles/View';
+
 
 const Card = (props) => {
   const users = props.users;
@@ -18,11 +19,11 @@ const Card = (props) => {
         <View style={[StyleView.borderBottomGray, styles.card]} >
           <Image
             style={[StyleImage.image, StyleImage.w80]}
-            source={user.img}
+            source={{uri: user.avatar_url}}
           />
           <View style={styles.info}>
-            <Text style={[StyleText.bold, StyleText.fs20]}> {user.name} </Text>
-            <Text style={[StyleText.colorGray, StyleText.secondTitle]}> {user.email} </Text>
+            <Text style={[StyleText.bold, StyleText.fs20]}> {user.login} </Text>
+            <Text style={[StyleText.colorGray, StyleText.secondTitle]}> {!user.email ? '' : user.email} </Text>
           </View>
         </View>
       </TouchableHighlight>
@@ -54,7 +55,14 @@ const users = [
   }
 ];
 
-const UserCard = (props) => <Card users={users} navigation={props.navigation} />
+const UserCard = (props) => {
+  const users = !props.users ? [] : props.users;
+  console.log("desde USerCard", users)
+
+  return (
+    <Card users={users} navigation={props.navigation} />
+  )
+}
 
 const styles = StyleSheet.create({
   card: {

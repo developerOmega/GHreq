@@ -1,13 +1,33 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { Text, View, StyleSheet, ScrollView, TextInput } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import UserCard from '../components/UserCard';
 import StyleView from '../styles/View';
 import StyleForm from '../styles/Form';
-import Var from '../styles/Var';
+import Loading from '../components/Loading';
+import User from '../models/User';
 
 const SearchUser = ({navigation}) => {
-  const { user, setUser } = useState('');
+  const [ user, setUser ] = useState('');
+  const [ users, setUsers ] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  
+  const getUser = async () => {
+    const userR = new User(user);
+    let arrUsers = [];
+    setIsLoading(true);
+    try {
+      const userData = await userR.getUsers();
+      arrUsers.push(userData);
+      setUsers(arrUsers);
+      console.log('users Var', userData);
+      console.log("users Arr", users);
+      setIsLoading(false);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+  
   return (
     <ScrollView>
       <View style={StyleView.container} >
@@ -20,10 +40,16 @@ const SearchUser = ({navigation}) => {
               onChangeText={setUser}
             /> 
           </View>
-          <Icon style={StyleForm.button} name="search" />
+          <Icon style={StyleForm.button} name="search" onPress={getUser} />
         </View>
         <View style={StyleView.main}>
-          <UserCard navigation={navigation} />
+          {
+            isLoading ? (
+              <Loading />
+            ) : (
+              <UserCard navigation={navigation} users={users} />
+            )
+          }
         </View>
       </View>
     </ScrollView>
