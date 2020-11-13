@@ -21,4 +21,23 @@ export default class My extends Data {
     });
     return repos.data;
   }
+
+  async setRepo(data) {
+    const token = await this.accessToken();
+
+    if(!data.gitignore_template) {
+      delete data.gitignore_template;
+    }
+    else {
+      data.gitignore_template = 'nanoc';
+    } 
+
+    const repo = await Axios.post('https://api.github.com/user/repos', data, {
+      headers: {
+        "Authorization": `bearer ${token}`,
+      }
+    });
+
+    return repo.data;
+  }
 }

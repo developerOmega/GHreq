@@ -1,11 +1,12 @@
 import React, {useState} from 'react';
-import { Text, TextInput, View, StyleSheet, ScrollView, Button } from 'react-native';
+import { Text, TextInput, View, StyleSheet, ScrollView, Button} from 'react-native';
 import CheckBox from '@react-native-community/checkbox' 
 import { RadioButton } from 'react-native-paper';
 import StyleView from '../styles/View';
 import StyleText from '../styles/Text';
 import StyleForm from '../styles/Form'
 import Var from '../styles/Var';
+import My from '../models/My';
 
 const Info = (props) => {
   const name = props.name,
@@ -100,12 +101,33 @@ const Initialize = (props) => {
   );
 }
 
-const ProjectCreate = () => {
+const ProjectCreate = ({navigation}) => {
   const [name, setName] = useState('');
   const [description, setDescription ] = useState('');
   const [status, setStatus] = useState('public');
   const [readme, setReadme ] = useState(false);
   const [gitIgnore, setGitIgnore ] = useState(false);
+  const my = new My;
+
+  const setRepo = async () => {
+    let data = {
+      name,
+      description,
+      private: status == 'private' ? true : false,
+      auto_init: readme,
+      gitignore_template: gitIgnore 
+    }
+    let repo = {};
+    try {
+      repo = await my.setRepo(data);
+      alert("new project is success");
+      console.log(repo);
+      navigation.navigate('Show', {repo});
+    } catch (error) {
+      console.error(error);
+    }
+
+  }
 
   return (
     <ScrollView>
@@ -133,6 +155,7 @@ const ProjectCreate = () => {
         <Button
           title="Create repository"
           color={Var.colorGreen}
+          onPress={setRepo}
         />
 
       </View>
