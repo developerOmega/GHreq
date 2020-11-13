@@ -6,11 +6,11 @@ import ProjectCreate from '../screens/ProjectCreate';
 import SearchUser from '../screens/SearchUser';
 
 const HomeStack = createStackNavigator();
-
 const Home = () => {
-
+ 
   return (
     <HomeStack.Navigator>
+      
       <HomeStack.Screen 
         name="Home"
         component={Profile}
@@ -29,6 +29,7 @@ const Home = () => {
 
 const SearchStack = createStackNavigator();
 
+
 const Search = () => {
   return (
     <SearchStack.Navigator>
@@ -39,6 +40,10 @@ const Search = () => {
       <SearchStack.Screen
         name="UserShow"
         component={Profile}
+      />
+      <SearchStack.Screen
+        name="ProjectUserShow"
+        component={ProjectShow}
       />
     </SearchStack.Navigator>
   )

@@ -29,8 +29,13 @@ const Profile = ({route, navigation}) => {
         }
       }
       else {
-        console.log("El parametro cumple")
-        setProfile(route.params.user)
+        try {
+          setProfile(route.params.user);
+          setIsLoading(false);
+        } catch (error) {
+          return console.error(error);
+        }
+        console.log("El parametro cumple", route.params.user)
       } 
     }
     fetchData();

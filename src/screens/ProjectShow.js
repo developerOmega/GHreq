@@ -18,7 +18,7 @@ const ProjectShow = ({route}) => {
           <View style={styles.end}>
             <Image
               style={[StyleImage.image, StyleImage.w60]}
-              source={require('../images/payaso.jpg')}
+              source={{uri: repo.owner.avatar_url}}
             />
             <View>
               <Text style={[StyleText.bold, StyleText.fs20 ]}> {repo.owner.login} </Text>

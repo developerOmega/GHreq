@@ -14,18 +14,20 @@ const SearchUser = ({navigation}) => {
   
   const getUser = async () => {
     const userR = new User(user);
+    console.log("El usuario", user)
     let arrUsers = [];
     setIsLoading(true);
     try {
-      const userData = await userR.getUsers();
+      const userData = await userR.getUsers(user);
       arrUsers.push(userData);
       setUsers(arrUsers);
-      console.log('users Var', userData);
-      console.log("users Arr", users);
+      // console.log('users Var', userData);
+      console.log("Login: ", users.login, "; User: ", user);
       setIsLoading(false);
     } catch (error) {
       console.error(error);
     }
+
   }
   
   return (

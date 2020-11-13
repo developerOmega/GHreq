@@ -16,7 +16,6 @@ export default class Repo extends User {
       }
     });
     let data = commits.data;
-
     return data;
   }
 

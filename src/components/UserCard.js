@@ -34,27 +34,6 @@ const Card = (props) => {
   </View>
 }
 
-const users = [
-  {
-    id: 1,
-    name: "DeveloperOmega",
-    email: 'theskip98@gmail.com',
-    img: require('../images/payaso.jpg')
-  },
-  {
-    id: 2,
-    name: "TylerDurden",
-    email: 'tyler@gmail.com',
-    img: require('../images/perfil.jpg')
-  },
-  {
-    id: 3,
-    name: "NayeliMedina",
-    email: 'nayeli98@gmail.com',
-    img: require('../images/perfilimg.png')
-  }
-];
-
 const UserCard = (props) => {
   const users = !props.users ? [] : props.users;
   console.log("desde USerCard", users)

@@ -29,18 +29,19 @@ const Card = (props) => {
 
     useEffect(() => {
       const getRepo = async () => {
+        let collaborators = [];
+        let commits = [];
         try {
-          let collaborators = await repoR.getCollaborators();
-          let commits = [];
-          // commits = commits.length;
-          setIsLoading(false)
-          dispatch({collaborators, commits});
+          collaborators = await repoR.getCollaborators();
         } catch (error) {
-          console.error("Hay un error", error);
+          // console.error("Hay un error", error);
         }
+
+        setIsLoading(false)
+        dispatch({collaborators, commits});
       }
       getRepo();
-
+      
       return () => {
         console.log("Please don't give me problems");
       } 
@@ -49,7 +50,14 @@ const Card = (props) => {
     return (
       <TouchableHighlight
           key={data.id}
-          onPress={() => navigation.navigate('Show', {repo: data})}
+          onPress={() => {
+            if(state.collaborators[0]) {
+              navigation.navigate('Show', {repo: data})
+            }
+            else {
+              navigation.navigate('ProjectUserShow', {repo: data})
+            }
+          }}
       >
         {
           isLoading ? (
